@@ -3,7 +3,7 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "GeoAdcodeMatcher"
+name = "geoadcode-matcher"
 version = "1.0.0"
 description = "行政区划代码匹配工具 - 通过省、市、县名称匹配行政代码"
 readme = "README.md"
@@ -25,8 +25,8 @@ dev = [
 ]
 
 [project.scripts]
-geo-match = "GeoAdcodeMatcher.cli:main"
-geo-match-gui = "GeoAdcodeMatcher.gui:main"
+geo-match = "geoadcode_matcher.cli:main"
+geo-match-gui = "geoadcode_matcher.gui:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

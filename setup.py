@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='GeoAdcodeMatcher',
+    name='geoadcode-matcher',
     version='1.0.0',
     description='行政区划代码匹配工具 - 通过省、市、县名称匹配行政代码',
     long_description=open('README.md', encoding='utf-8').read(),
@@ -17,10 +17,10 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'geo-match=GeoAdcodeMatcher.cli:main',
+            'geo-match=geoadcode_matcher.cli:main',
         ],
         'gui_scripts': [
-            'geo-match-gui=GeoAdcodeMatcher.gui:main',
+            'geo-match-gui=geoadcode_matcher.gui:main',
         ],
     },
     classifiers=[

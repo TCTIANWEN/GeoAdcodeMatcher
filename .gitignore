@@ -117,6 +117,7 @@ dmypy.json
 .DS_Store
 Thumbs.db
 
-# Project specific
-*.csv
-!discode_ans*.csv
+# SSH Keys
+*.pub
+id_rsa*
+*.pem

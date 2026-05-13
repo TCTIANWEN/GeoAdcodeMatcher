@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "GeoAdcodeMatcher"
+version = "1.0.0"
+description = "行政区划代码匹配工具 - 通过省、市、县名称匹配行政代码"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "GeoAdcodeMatcher Team"}
+]
+dependencies = [
+    "pandas>=1.0",
+]
+
+[project.optional-dependencies]
+tk = []
+dev = [
+    "pytest>=7.0",
+    "black>=22.0",
+    "flake8>=4.0",
+]
+
+[project.scripts]
+geo-match = "GeoAdcodeMatcher.cli:main"
+geo-match-gui = "GeoAdcodeMatcher.gui:main"
+
+[tool.setuptools.packages.find]
+where = ["."]

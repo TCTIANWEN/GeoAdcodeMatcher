@@ -6,9 +6,25 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
+# 将父目录加入路径
+script_dir = Path(__file__).parent
+parent_dir = script_dir.parent
+sys.path.insert(0, str(parent_dir))
+sys.path.insert(0, str(script_dir))
 
-from geoadcode_matcher import match_csv, get_bundled_codebook
+# 直接加载模块
+import importlib.util
+
+def load_module(name, filepath):
+    spec = importlib.util.spec_from_file_location(name, filepath)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+geoadcode = load_module("geoadcode_matcher", script_dir / "__init__.py")
+match_csv = geoadcode.match_csv
+get_bundled_codebook = geoadcode.get_bundled_codebook
 
 
 def main():

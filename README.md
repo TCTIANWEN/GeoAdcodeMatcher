@@ -49,16 +49,13 @@ print(result_df)
 ## 命令行使用
 
 ```bash
-# 基本用法（确保当前目录有 discode_ans-2023.csv）
-python -c "
-import sys
-from pathlib import Path
-sys.path.insert(0, '.')
-from geoadcode_matcher import match_csv
+# 基本用法（自动使用内置区划表）
+python cli.py input.csv
 
-result = match_csv('input.csv', 'discode_ans-2023.csv')
-result.to_csv('output.csv', index=False)
-"
+# 指定区划表
+python cli.py input.csv codebook.csv
+
+# 输出文件自动生成为 input_matched.csv
 ```
 
 ## GUI 图形界面

@@ -1,77 +1,55 @@
+#!/usr/bin/env python3
 """
-命令行接口
+命令行接口 - 极简用法: python cli.py input.csv [codebook.csv]
 """
 
-import argparse
 import sys
 from pathlib import Path
 
-from .utils import match_csv
+# 添加模块路径
+sys.path.insert(0, str(Path(__file__).parent))
+
+from geoadcode_matcher import match_csv, get_bundled_codebook
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description='行政区划代码匹配工具 - 通过省、市、县名称匹配行政代码',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog='''
-示例:
-  python -m GeoAdcodeMatcher.cli input.csv
-  python -m GeoAdcodeMatcher.cli input.csv -c codebook.csv
-  python -m GeoAdcodeMatcher.cli input.csv -o output.csv -c codebook.csv
-        '''
-    )
-    parser.add_argument('input', type=Path, help='输入 CSV 文件路径')
-    parser.add_argument('-c', '--codebook', type=Path, help='区划对照表路径（默认为 discode_ans-2023.csv）')
-    parser.add_argument('-o', '--output', type=Path, help='输出文件路径（默认为 input_stem_匹配行政代码.csv）')
-    parser.add_argument('--province-col', dest='province_col', help='省列名（不指定则自动识别）')
-    parser.add_argument('--city-col', dest='city_col', help='市列名（不指定则自动识别）')
-    parser.add_argument('--county-col', dest='county_col', help='县/区列名（不指定则自动识别）')
-
-    args = parser.parse_args()
-
-    if not args.input.exists():
-        print(f'错误：输入文件不存在: {args.input}', file=sys.stderr)
+    if len(sys.argv) < 2:
+        print("用法: python cli.py input.csv [codebook.csv]")
         sys.exit(1)
 
-    codebook_path = args.codebook
-    if codebook_path is None:
-        codebook_path = Path('discode_ans-2023.csv')
+    input_path = Path(sys.argv[1])
+    if not input_path.exists():
+        print(f"错误：输入文件不存在: {input_path}")
+        sys.exit(1)
+
+    # 区划表：参数2 > 内置 > 当前目录
+    if len(sys.argv) >= 3:
+        codebook_path = Path(sys.argv[2])
+    else:
+        codebook_path = get_bundled_codebook()
         if not codebook_path.exists():
-            codebook_path = Path('discode_ans.csv')
-        if not codebook_path.exists():
-            print(f'错误：未找到区划对照表，请使用 -c 参数指定', file=sys.stderr)
-            sys.exit(1)
+            codebook_path = Path("discode_ans-2023.csv")
+            if not codebook_path.exists():
+                print("错误：未找到区划对照表")
+                sys.exit(1)
 
     if not codebook_path.exists():
-        print(f'错误：区划对照表不存在: {codebook_path}', file=sys.stderr)
+        print(f"错误：区划对照表不存在: {codebook_path}")
         sys.exit(1)
 
-    output_path = args.output
-    if output_path is None:
-        output_path = args.input.with_name(f'{args.input.stem}_匹配行政代码.csv')
+    # 输出文件：input_matched.csv
+    output_path = input_path.with_name(f"{input_path.stem}_matched.csv")
 
-    print(f'输入文件: {args.input}')
-    print(f'区划对照表: {codebook_path}')
-    print(f'输出文件: {output_path}')
+    print(f"输入: {input_path}")
+    print(f"区划表: {codebook_path}")
+    print(f"输出: {output_path}")
 
-    try:
-        result_df = match_csv(
-            input_path=args.input,
-            codebook_path=codebook_path,
-            province_col=args.province_col,
-            city_col=args.city_col,
-            county_col=args.county_col,
-        )
-        result_df.to_csv(output_path, index=False, encoding='utf-8-sig')
+    result = match_csv(input_path, codebook_path)
+    result.to_csv(output_path, index=False, encoding="utf-8-sig")
 
-        matched_count = (result_df['adcode'].astype(str).str.strip() != '').sum()
-        total_count = len(result_df)
-        print(f'成功匹配 {matched_count}/{total_count} 行')
-        print(f'结果已保存到: {output_path}')
-    except Exception as e:
-        print(f'错误: {e}', file=sys.stderr)
-        sys.exit(1)
+    matched = (result["adcode"].astype(str).str.strip() != "").sum()
+    print(f"完成：{matched}/{len(result)} 行匹配成功")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

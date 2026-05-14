@@ -49,13 +49,14 @@ print(result_df)
 ## 命令行使用
 
 ```bash
-# 基本用法（自动使用内置区划表）
+# 1个参数: input.csv -> input_matched.csv (内置区划表)
 python cli.py input.csv
 
-# 指定区划表
-python cli.py input.csv codebook.csv
+# 2个参数: input.csv output.csv (内置区划表)
+python cli.py input.csv output.csv
 
-# 输出文件自动生成为 input_matched.csv
+# 3个参数: input.csv output.csv codebook.csv
+python cli.py input.csv output.csv codebook.csv
 ```
 
 ## GUI 图形界面

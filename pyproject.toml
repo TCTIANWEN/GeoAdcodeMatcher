@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geoadcode-matcher"
-version = "1.0.0"
-description = "行政区划代码匹配工具 - 通过省、市、县名称匹配行政代码"
+version = "1.1.0"
+description = "行政区划代码匹配工具 - 通过省、市、县名称匹配行政代码（即插即用，数据内置）"
 readme = "README.md"
 requires-python = ">=3.7"
 license = {text = "MIT"}

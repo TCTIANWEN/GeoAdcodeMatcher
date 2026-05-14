@@ -7,11 +7,14 @@ from typing import List, Optional
 
 import pandas as pd
 
-from .matcher import AdcodeMatcher
+try:
+    from .matcher import AdcodeMatcher
+except ImportError:
+    from matcher import AdcodeMatcher
 
-COMMON_PROVINCE_COLS = ['province', '省', '省份', '所在省', '所属省份', 'Province', 'PROVINCE', 'C1']
-COMMON_CITY_COLS = ['city', '市', '城市', '所在市', '所属城市', 'City', 'CITY', 'C2']
-COMMON_COUNTY_COLS = ['county', '区县', '县区', '区', '县', '所在区县', '所属区县', 'district', 'area', 'County', 'COUNTY', 'District', 'DISTRICT', 'C3']
+COMMON_PROVINCE_COLS = ['province', '省', '省份', '所在省', '所属省份', 'C1']
+COMMON_CITY_COLS = ['city', '市', '城市', '所在市', '所属城市', 'C2']
+COMMON_COUNTY_COLS = ['county', '区县', '县区', '区', '县', '所在区县', '所属区县', 'district', 'area', 'C3']
 
 
 def detect_column(columns: List[str], candidates: List[str], required: bool = True) -> Optional[str]:
@@ -125,3 +128,13 @@ def match_csv(
         city_col=city_col,
         county_col=county_col,
     )
+
+
+def get_bundled_codebook() -> Path:
+    """获取内置的行政区划对照表路径"""
+    return Path(__file__).parent / "discode_ans-2023.csv"
+
+
+def get_default_codebook() -> Path:
+    """兼容性别名"""
+    return get_bundled_codebook()

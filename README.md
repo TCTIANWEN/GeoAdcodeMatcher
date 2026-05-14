@@ -49,10 +49,10 @@ print(result_df)
 ## 命令行使用
 
 ```bash
-# 1个参数: input.csv -> input_matched.csv (内置区划表)
+# 1个参数: input.csv（输出为 input_matched.csv，内置区划表）
 python cli.py input.csv
 
-# 2个参数: input.csv output.csv (内置区划表)
+# 2个参数: input.csv output.csv（内置区划表）
 python cli.py input.csv output.csv
 
 # 3个参数: input.csv output.csv codebook.csv

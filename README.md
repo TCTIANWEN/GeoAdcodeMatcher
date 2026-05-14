@@ -46,6 +46,29 @@ print(result_df)
 2      浙江省  杭州市    西湖区  330106              浙江省          杭州市            西湖区
 ```
 
+## 命令行使用
+
+```bash
+# 基本用法（确保当前目录有 discode_ans-2023.csv）
+python -c "
+import sys
+from pathlib import Path
+sys.path.insert(0, '.')
+from geoadcode_matcher import match_csv
+
+result = match_csv('input.csv', 'discode_ans-2023.csv')
+result.to_csv('output.csv', index=False)
+"
+```
+
+## GUI 图形界面
+
+```bash
+python match_adcode_gui.py
+```
+
+启动后，程序会弹出文件选择对话框，请选择要处理的 CSV 文件。
+
 ## discode_ans-2023.csv 是什么？
 
 本仓库附带的 `discode_ans-2023.csv` 是 2023 年中国行政区划对照表，包含以下字段：
@@ -115,14 +138,6 @@ code,name,province,city,county
 2. **模糊匹配**：如果精确匹配失败，使用字符串相似度算法（difflib）进行模糊匹配
 3. **包含匹配**：如果相似度匹配失败，尝试子字符串包含匹配
 4. **去后缀匹配**：最后会去除常见行政后缀（省、市、县、区、州等）后重试匹配
-
-## pip 安装（可选）
-
-如需通过 pip 安装：
-
-```bash
-pip install geoadcode-matcher
-```
 
 ## 免责声明
 
